@@ -22,7 +22,7 @@ function exeQuery($query)
     {
  	  $q = $conn->prepare($query);//prepare the query for execution
  	  $q->execute();//execute
- 	  $answers = $q->fetchAll();//fecth the results of execution
+ 	  $answers = $q->fetchAll(PDO::FETCH_ASSOC);//fecth the results of execution
  	  $q->closeCursor();
  	  return $answers;	
     }
@@ -33,14 +33,34 @@ function exeQuery($query)
  }
 
 
- $query2 = "select * from accounts where id<6";
- $result2 = exeQuery($query2);
+ $query = "select * from accounts where id<6";
+ $result = exeQuery($query);
+ 
+ //print_r($result);
 
  echo "The number of records in Accounts are: ";
- print_r(count($result2));
+ print_r(count($result));
  echo "<br><hr><br>";
 
+  if(count($result) > 0)
+ {
+ 	echo "<table border=\"1\"><tr><th>ID</th><th>Email</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>birthday</th><th>Gender</th><th>Password</th></tr>";
+ 	foreach ($result as $row) 
+ 	{
+ 		echo "<tr>";
+ 		foreach ($row as $bow) 
+ 		{
+ 		 	echo "<td>".$bow."</td>";
+ 		}
+ 		echo "</tr>";
+    }
+ 	
+ }
+ else
+ {
+     echo '0 results';
+ }
 
- $conn = null;
+ $conn = null; 
  ?>
 
