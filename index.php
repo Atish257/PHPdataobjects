@@ -1,8 +1,19 @@
 <?php
+
+
+ini_set('display_errors','On');
+error_reporting(E_ALL);
+
+
+$obj = new main();
+
+class main{
+
+public function __construct(){    
 $servername = "sql2.njit.edu";
 $username = "an478";
 $password = "8QD1YLZg";
-
+global $conn;
 try {
     $conn = new PDO("mysql:host=$servername;dbname=an478", $username, $password);
     // set the PDO error mode to exception
@@ -11,33 +22,13 @@ try {
     }
 catch(PDOException $e)
     {
-    echo "Connection failed. Try connecting once again !" . $e->getMessage();
+    echo "Connection failed. Try connecting once again !". $e->getMessage();
     }
-
-
-function exeQuery($query) 
-{
- 	global $conn;
-    try 
-    {
- 	  $q = $conn->prepare($query);//prepare the query for execution
- 	  $q->execute();//execute
- 	  $answers = $q->fetchAll(PDO::FETCH_ASSOC);//fecth the results of execution
- 	  $q->closeCursor();
- 	  return $answers;	
-    }
-    catch (PDOException $e) 
-    {
- 	echo "Check for internal server error" . $e->getMessage();
-    }	  
- }
-
-
- $query = "select * from accounts where id<6";
- $result = exeQuery($query);
  
- //print_r($result);
-
+ //print_r($conn);
+ $query = "select * from accounts where id<6";
+ $result =$this::exeQuery($query,$conn);
+ 
  echo "The number of records in Accounts are: ";
  print_r(count($result));
  echo "<br><hr><br>";
@@ -61,6 +52,24 @@ function exeQuery($query)
      echo '0 results';
  }
 
- $conn = null; 
- ?>
+ $conn = null;
+}
+
+public function exeQuery($query,$conn) 
+{
+    try
+    {      
+      $q = $conn->prepare($query);//prepare the query for execution
+      $q->execute();//execute
+      $answers = $q->fetchAll(PDO::FETCH_ASSOC);//fecth the results of execution
+      $q->closeCursor();
+      return $answers;  
+    }
+    catch (PDOException $e) 
+    {
+    echo "Check for internal server error" . $e->getMessage();
+    }     
+}
+}
+?>
 
