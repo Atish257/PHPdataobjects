@@ -1,11 +1,10 @@
 <?php
 
-
+//set to display errors
 ini_set('display_errors','On');
 error_reporting(E_ALL);
 
-
-$obj = new main();
+$obj = new main();//instantiate the object
 
 class main{
 
@@ -13,7 +12,7 @@ public function __construct(){
 $servername = "sql2.njit.edu";
 $username = "an478";
 $password = "8QD1YLZg";
-global $conn;
+global $conn; //create PDO objects
 try {
     $conn = new PDO("mysql:host=$servername;dbname=an478", $username, $password);
     // set the PDO error mode to exception
@@ -27,14 +26,14 @@ catch(PDOException $e)
  
  //print_r($conn);
  $query = "select * from accounts where id<6";
- $result =$this::exeQuery($query,$conn);
+ $result =$this::exeQuery($query,$conn);//execute the query
  
  echo "The number of records in Accounts are: ";
  print_r(count($result));
  echo "<br><hr><br>";
 
   if(count($result) > 0)
- {
+ {  //display the result in a HTML Table
  	echo "<table border=\"1\"><tr><th>ID</th><th>Email</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>birthday</th><th>Gender</th><th>Password</th></tr>";
  	foreach ($result as $row) 
  	{
